@@ -61,7 +61,7 @@ CREATE TABLE patients (
 CREATE TABLE provinces (
     id bigint NOT NULL,
     name varchar(50) NOT NULL,
-    departments_id bigint NOT NULL,
+    department_id bigint NOT NULL,
     CONSTRAINT provinces_pk PRIMARY KEY (id)
 );
 
@@ -139,7 +139,7 @@ ALTER TABLE patients ADD CONSTRAINT patients_users FOREIGN KEY patients_users (u
     REFERENCES users (id);
 
 -- Reference: provinces_departments (table: provinces)
-ALTER TABLE provinces ADD CONSTRAINT provinces_departments FOREIGN KEY provinces_departments (departments_id)
+ALTER TABLE provinces ADD CONSTRAINT provinces_departments FOREIGN KEY provinces_departments (department_id)
     REFERENCES departments (id);
 
 -- Reference: psychologists_users (table: psychologists)
