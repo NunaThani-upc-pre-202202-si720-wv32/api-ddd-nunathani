@@ -7,7 +7,10 @@ export class AuditTrail {
   private readonly updatedAt: DateTime;
   private readonly updatedBy: UserId;
 
-  private constructor(createdAt: DateTime, createdBy: UserId, updatedAt: DateTime, updatedBy: UserId) {
+  private constructor(createdAt: DateTime, 
+    createdBy: UserId, 
+    updatedAt: DateTime, 
+    updatedBy: UserId) {
     this.createdAt = createdAt;
     this.createdBy = createdBy;
     this.updatedAt = updatedAt;

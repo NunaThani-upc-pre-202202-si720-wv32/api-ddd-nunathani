@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
-import { PersonClientDto } from '../../dtos/response/person-client.dto';
-import { GetPersonClients } from '../../messages/queries/get-person-clients.query';
-import { PersonMapper } from '../../mappers/person.mapper';
+import { PersonClientDto } from '../../dtos/response/patient-client.dto';
+import { GetPersonClients } from '../../messages/queries/get-patient-clients.query';
+import { PersonMapper } from '../../mappers/patient.mapper';
 
 @QueryHandler(GetPersonClients)
 export class GetPersonClientsHandler implements IQueryHandler<GetPersonClients> {
@@ -19,7 +19,7 @@ export class GetPersonClientsHandler implements IQueryHandler<GetPersonClients> 
     FROM 
       clients
     WHERE
-      type = 'PERS'
+      type = 'PATIENT'
     ORDER BY
       last_name, first_name;`;
     const rows = await manager.query(sql);

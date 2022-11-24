@@ -47,8 +47,8 @@ export class PsychologistController {
   @Get('/:id')
   async getById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
     try {
-      const person = await this.psychologistApplicationService.getById(id);
-      return ApiController.ok(response, person);
+      const patient = await this.psychologistApplicationService.getById(id);
+      return ApiController.ok(response, patient);
     } catch (error) {
       return ApiController.serverError(response, error);
     }

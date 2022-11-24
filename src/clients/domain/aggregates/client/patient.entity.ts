@@ -1,17 +1,17 @@
 import { ClientType } from 'src/clients/domain/aggregates/client/client-type.enum';
-import { PersonRegistered } from 'src/clients/domain/events/person-registered.event';
+import { PersonRegistered } from 'src/clients/domain/events/patient-registered.event';
 import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
-import { PersonName } from 'src/shared/domain/values/person-name.value';
+import { PersonName } from 'src/shared/domain/values/patient-name.value';
 import { ClientId } from './client-id.value';
 import { Dni } from '../../../../shared/domain/values/dni.value';
 import { Client } from './client.root.entity';
 
-export class Person extends Client {
+export class Patient extends Client {
   private name: PersonName;
   private dni: Dni;
 
   public constructor(name: PersonName, dni: Dni, auditTrail: AuditTrail) {
-    super(ClientType.PERSON, auditTrail);
+    super(ClientType.PATIENT, auditTrail);
     this.name = name;
     this.dni = dni;
   }

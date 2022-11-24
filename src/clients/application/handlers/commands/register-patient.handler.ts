@@ -1,9 +1,9 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { RegisterPerson } from '../../messages/commands/register-person.command';
-import { PersonMapper } from '../../mappers/person.mapper';
-import { Person } from 'src/clients/domain/aggregates/client/person.entity';
+import { RegisterPerson } from '../../messages/commands/register-patient.command';
+import { PersonMapper } from '../../mappers/patient.mapper';
+import { Patient } from 'src/clients/domain/aggregates/client/patient.entity';
 import { Inject } from '@nestjs/common';
-import { PersonRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/person.repository';
+import { PersonRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/patient.repository';
 import { AppSettings } from 'src/shared/application/app-settings';
 import { DataSource } from 'typeorm';
 
@@ -19,23 +19,23 @@ export class RegisterPersonHandler
   }
 
   async execute(command: RegisterPerson) {
-    let person: Person = PersonMapper.commandToDomain(command, AppSettings.SUPER_ADMIN);
+    let patient: Patient = PersonMapper.commandToDomain(command, AppSettings.SUPER_ADMIN);
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      person = await this.personRepository.create(person);
-      if (person == null) throw new Error("");
-      person = this.publisher.mergeObjectContext(person);
-      person.register();
-      person.commit();
+      patient = await this.personRepository.create(patient);
+      if (patient == null) throw new Error("");
+      patient = this.publisher.mergeObjectContext(patient);
+      patient.register();
+      patient.commit();
       await queryRunner.commitTransaction();
     } catch(err) {
       await queryRunner.rollbackTransaction();
-      person = null;
+      patient = null;
     } finally {
       await queryRunner.release();
     }
-    return person;
+    return patient;
   }
 }

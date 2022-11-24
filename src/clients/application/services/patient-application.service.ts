@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { RegisterPersonRequest } from '../dtos/request/register-person-request.dto';
-import { RegisterPersonResponse } from '../dtos/response/register-person-response.dto';
-import { RegisterPersonValidator } from '../validators/register-person.validator';
+import { RegisterPersonRequest } from '../dtos/request/register-patient-request.dto';
+import { RegisterPersonResponse } from '../dtos/response/register-patient-response.dto';
+import { RegisterPersonValidator } from '../validators/register-patient.validator';
 import { AppNotification } from 'src/shared/application/app.notification';
 import { Result } from 'typescript-result';
-import { RegisterPerson } from '../messages/commands/register-person.command';
-import { PersonRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/person.repository';
-import { Person } from 'src/clients/domain/aggregates/client/person.entity';
-import { PersonMapper } from '../mappers/person.mapper';
+import { RegisterPerson } from '../messages/commands/register-patient.command';
+import { PersonRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/patient.repository';
+import { Patient } from 'src/clients/domain/aggregates/client/patient.entity';
+import { PersonMapper } from '../mappers/patient.mapper';
 
 @Injectable()
 export class PersonApplicationService {
@@ -25,8 +25,8 @@ export class PersonApplicationService {
     const registerPerson: RegisterPerson = PersonMapper.dtoRequestToCommand(registerPersonRequest);
     const notification: AppNotification = await this.registerPersonValidator.validate(registerPerson);
     if (notification.hasErrors()) return Result.error(notification);
-    const person: Person = await this.commandBus.execute(registerPerson);
-    const response: RegisterPersonResponse = PersonMapper.domainToDtoResponse(person);
+    const patient: Patient = await this.commandBus.execute(registerPerson);
+    const response: RegisterPersonResponse = PersonMapper.domainToDtoResponse(patient);
     return Result.ok(response);
   }
 

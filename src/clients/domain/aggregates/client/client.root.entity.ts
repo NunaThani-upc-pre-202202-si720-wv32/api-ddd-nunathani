@@ -29,4 +29,8 @@ export class Client extends AggregateRoot {
   public changeId(id: ClientId) {
     this.id = id;
   }
+
+  
+
+
 }
