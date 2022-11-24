@@ -18,7 +18,7 @@ export class GetPsychologistClientsHandler implements IQueryHandler<GetPsycholog
     FROM 
       clients
     WHERE
-      type = 'C'
+      type = 'PSYC'
     ORDER BY
       psychologist_name;`;
     const rows = await manager.query(sql);

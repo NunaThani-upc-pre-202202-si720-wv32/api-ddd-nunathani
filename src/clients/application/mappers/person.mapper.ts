@@ -1,19 +1,19 @@
+import { PersonEntity } from 'src/clients/infrastructure/persistence/entities/person.entity';
 import { Person } from 'src/clients/domain/aggregates/client/person.entity';
+import { PersonNameValue } from 'src/clients/infrastructure/persistence/values/person-name.value';
+import { DniValue } from 'src/clients/infrastructure/persistence/values/dni.value';
 import { AuditTrailValue } from 'src/shared/infrastructure/persistence/values/audit-trail.value';
 import { RegisterPerson } from '../messages/commands/register-person.command';
 import { PersonName } from 'src/shared/domain/values/person-name.value';
 import { Dni } from 'src/shared/domain/values/dni.value';
 import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
 import { DateTime } from 'src/shared/domain/values/date-time.value';
+import { UserId } from 'src/users/domain/aggregates/user/user-id.value';
 import { PersonFactory } from 'src/clients/domain/factories/person.factory';
 import { PersonClientDto } from '../dtos/response/person-client.dto';
 import { ClientId } from 'src/clients/domain/aggregates/client/client-id.value';
 import { RegisterPersonRequest } from '../dtos/request/register-person-request.dto';
 import { RegisterPersonResponse } from '../dtos/response/register-person-response.dto';
-import { PersonEntity } from 'src/clients/infrastructure/persistence/entities/person.entity';
-import { PersonNameValue } from 'src/clients/infrastructure/persistence/values/person-name.value';
-import { DniValue } from 'src/clients/infrastructure/persistence/values/dni.value';
-import { UserId } from 'src/users/domain/aggregates/user/user-id.value';
 
 export class PersonMapper {
   public static dtoRequestToCommand(registerPersonRequest: RegisterPersonRequest) {
@@ -25,6 +25,7 @@ export class PersonMapper {
   }
 
   public static domainToDtoResponse(person: Person) {
+    
     return new RegisterPersonResponse(
       person.getId().getValue(),
       person.getName().getFirstName(),

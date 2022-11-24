@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
+import { ClientType } from 'src/clients/domain/aggregates/client/client-type.enum';
 import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
 import { ClientId } from './client-id.value';
-import { ClientType } from './client-type.enum';
 
 export class Client extends AggregateRoot {
   protected id: ClientId;

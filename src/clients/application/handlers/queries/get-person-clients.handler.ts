@@ -19,7 +19,7 @@ export class GetPersonClientsHandler implements IQueryHandler<GetPersonClients> 
     FROM 
       clients
     WHERE
-      type = 'P'
+      type = 'PERS'
     ORDER BY
       last_name, first_name;`;
     const rows = await manager.query(sql);

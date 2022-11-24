@@ -39,8 +39,8 @@ export class PsychologistEntityRepository implements PsychologistRepository  {
     return PsychologistMapper.entityToDomain(psychologistEntity);
   }
   
-  async getByRuc(ruc: string): Promise<Psychologist> {
-    let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder().where("ruc = :ruc", { ruc }).getOne();
-    return PsychologistMapper.entityToDomain(psychologistEntity);
-  }
+  // async getByRuc(ruc: string): Promise<Psychologist> {
+  //   let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder().where("ruc = :ruc", { ruc }).getOne();
+  //   return PsychologistMapper.entityToDomain(psychologistEntity);
+  // }
 }

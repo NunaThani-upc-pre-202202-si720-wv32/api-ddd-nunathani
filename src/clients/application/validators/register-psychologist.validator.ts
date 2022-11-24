@@ -8,25 +8,34 @@ import { RegisterPsychologist } from '../messages/commands/register-psychologist
 export class RegisterPsychologistValidator {
   constructor(
     @Inject(PSYCHOLOGIST_REPOSITORY)
-    private csychologistRepository: PsychologistRepository,
+    private psychologistRepository: PsychologistRepository,
   ) {
   }
 
   public async validate(registerPsychologist: RegisterPsychologist): Promise<AppNotification> {
     let notification: AppNotification = new AppNotification();
-    const name: string = registerPsychologist.name.trim();
+    const name: string = registerPsychologist.name;
+    //    const name: string = registerPsychologist.name.trim();
+
     if (name.length <= 0) {
       notification.addError('name is required', null);
     }
-    
+    // const ruc: string = registerPsychologist.ruc.trim();
+    // if (ruc.length <= 0) {
+    //   notification.addError('ruc is required', null);
+    // }
     if (notification.hasErrors()) {
       return notification;
     }
-    let csychologist: Psychologist = await this.csychologistRepository.getByName(name);
-    if (csychologist != null) {
+    let psychologist: Psychologist = await this.psychologistRepository.getByName(name);
+    if (psychologist != null) {
       notification.addError('name is taken', null);
       return notification;
     }
+    // psychologist = await this.psychologistRepository.getByRuc(ruc);
+    // if (psychologist != null) {
+    //   notification.addError('ruc is taken', null);
+    // }
     return notification;
   }
 }
