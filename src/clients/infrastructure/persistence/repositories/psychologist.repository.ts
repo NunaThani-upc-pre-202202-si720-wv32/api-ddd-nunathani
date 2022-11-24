@@ -5,11 +5,11 @@ import { Repository } from "typeorm";
 import { PsychologistEntity } from "../entities/psychologist.entity";
 import { PsychologistMapper } from '../../../application/mappers/psychologist.mapper';
 
-export class PsychologistEntityRepository implements PsychologistRepository  {
+export class PsychologistEntityRepository implements PsychologistRepository {
   constructor(
     @InjectRepository(PsychologistEntity)
     private psychologistRepository: Repository<PsychologistEntity>,
-  ) {}
+  ) { }
 
   async create(psychologist: Psychologist): Promise<Psychologist> {
     let psychologistEntity: PsychologistEntity = PsychologistMapper.domainToEntity(psychologist);
@@ -35,10 +35,17 @@ export class PsychologistEntityRepository implements PsychologistRepository  {
   }
 
   async getByName(name: string): Promise<Psychologist> {
-    let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder('psychologist').where("psychologist.psychologistName.value = :psychologistName", { psychologistName: name }).getOne();
+    let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder('psychologist')
+    .where("psychologist.psychologistName.value = :psychologistName", { psychologistName: name }).getOne();
     return PsychologistMapper.entityToDomain(psychologistEntity);
   }
-  
+
+  async getByEmail(email: string): Promise<Psychologist> {
+    let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder()
+    .where("email = :email", { email }).getOne();
+    return PsychologistMapper.entityToDomain(psychologistEntity);
+  }
+
   // async getByRuc(ruc: string): Promise<Psychologist> {
   //   let psychologistEntity: PsychologistEntity = await this.psychologistRepository.createQueryBuilder().where("ruc = :ruc", { ruc }).getOne();
   //   return PsychologistMapper.entityToDomain(psychologistEntity);

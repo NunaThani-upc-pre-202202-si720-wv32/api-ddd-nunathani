@@ -1,6 +1,7 @@
 import { ClientType } from 'src/clients/domain/aggregates/client/client-type.enum';
 import { AuditTrailValue } from 'src/shared/infrastructure/persistence/values/audit-trail.value';
 import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
+import { EmailValue } from '../values/email.value';
 
 @Entity('clients')
 @TableInheritance({ column: 'type', })
@@ -13,4 +14,7 @@ export class ClientEntity {
 
   @Column({ name: 'type', type: 'enum', enum: ClientType, default: ClientType.PSYCHOLOGIST })
   readonly type: ClientType;
+
+  @Column((type) => EmailValue, {prefix: false })
+  public email: EmailValue;
 }

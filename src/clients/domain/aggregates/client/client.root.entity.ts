@@ -8,11 +8,13 @@ export class Client extends AggregateRoot {
   protected id: ClientId;
   protected type: ClientType;
   protected readonly auditTrail: AuditTrail;
+  protected email: Email;
 
-  public constructor(type: ClientType, auditTrail: AuditTrail) {
+  public constructor(type: ClientType, email: Email, auditTrail: AuditTrail) {
     super();
     this.type = type;
     this.auditTrail = auditTrail;
+    this.email = email;
   }
 
   public getId(): ClientId {
@@ -29,6 +31,10 @@ export class Client extends AggregateRoot {
 
   public changeId(id: ClientId) {
     this.id = id;
+  }
+
+  public getByEmail(): Email {
+    return this.email;
   }
 
 }

@@ -3,6 +3,7 @@ export class RegisterPsychologistResponse {
       public id: number,
       public readonly name: string,
       public readonly createdAt: string,
-      public readonly createdBy: number
+      public readonly createdBy: number,
+      public email: string,
     ) {}
   }

@@ -14,11 +14,13 @@ import { PsychologistClientDto } from '../dtos/response/psychologist-client.dto'
 import { RegisterPsychologist } from '../messages/commands/register-psychologist.command';
 import { RegisterPsychologistRequest } from '../dtos/request/register-psychologist-request.dto';
 import { RegisterPsychologistResponse } from '../dtos/response/register-psychologist-response.dto';
+import { Email } from 'src/shared/domain/values/email.value';
 
 export class PsychologistMapper {
   public static dtoRequestToCommand(registerPsychologistRequest: RegisterPsychologistRequest): RegisterPsychologist {
     return new RegisterPsychologist(
       registerPsychologistRequest.name,
+      registerPsychologistRequest.email
     );
   }
 
@@ -27,7 +29,8 @@ export class PsychologistMapper {
       psychologist.getId().getValue(),
       psychologist.getName().getValue(),
       psychologist.getAuditTrail().getCreatedAt().format(),
-      psychologist.getAuditTrail().getCreatedBy().getValue()
+      psychologist.getAuditTrail().getCreatedBy().getValue(),
+      psychologist.getEmail().getValue()
     );
   }
 
@@ -39,7 +42,8 @@ export class PsychologistMapper {
       null,
       null
     );
-    let psychologist: Psychologist = PsychologistFactory.from(psychologistName, auditTrail);
+    const email: Email = Email.create(command.email).getOrNull();
+    let psychologist: Psychologist = PsychologistFactory.from(psychologistName, auditTrail, email);
     return psychologist;
   }
 
@@ -67,7 +71,8 @@ export class PsychologistMapper {
       psychologistEntity.auditTrail.updatedBy != null ? UserId.of(psychologistEntity.auditTrail.updatedBy) : null
     );
     const clientId: ClientId = ClientId.of(psychologistEntity.id);
-    let psychologist: Psychologist = PsychologistFactory.withId(clientId, psychologistName, auditTrail);
+    const email: Email = Email.create(psychologistEntity.email.value).getOrNull();
+    let psychologist: Psychologist = PsychologistFactory.withId(clientId, psychologistName, auditTrail, email);
     return psychologist;
   }
 
@@ -75,6 +80,7 @@ export class PsychologistMapper {
     let dto = new PsychologistClientDto();
     dto.id = Number(row.id);
     dto.psychologistName = row.psychologistName;
+    dto.email = row.email;
     return dto;
   }
 }

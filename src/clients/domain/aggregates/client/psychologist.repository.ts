@@ -8,4 +8,5 @@ export interface PsychologistRepository {
   delete(psychologistId: number): Promise<boolean>;
   getById(id: number): Promise<Psychologist>;
   getByName(name: string): Promise<Psychologist>;
+  getByEmail(email: string): Promise<Psychologist>;
 }

@@ -12,8 +12,8 @@ export class Patient extends Client {
   private dni: Dni;
   //private email: Email;
 
-  public constructor(name: PatientName, dni: Dni, auditTrail: AuditTrail) {
-    super(ClientType.PATIENT, auditTrail);
+  public constructor(name: PatientName, dni: Dni, email: Email, auditTrail: AuditTrail) {
+    super(ClientType.PATIENT, email, auditTrail);
     this.name = name;
     this.dni = dni;
     //this.email = email;
@@ -24,7 +24,7 @@ export class Patient extends Client {
     this.name.getFirstName(), 
     this.name.getLastName(), 
     this.dni.getValue(),
-    //this.email.getValue()
+    this.email.getValue()
     );
 
     this.apply(event);
@@ -54,5 +54,7 @@ export class Patient extends Client {
     this.dni = dni;
   }
 
-  public get
+  public getEmail(): Email {
+    return this.email;
+  }
 }

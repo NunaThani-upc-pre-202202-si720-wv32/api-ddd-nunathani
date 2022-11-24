@@ -38,4 +38,9 @@ export class PatientEntityRepository implements PatientRepository  {
     let patientEntity: PatientEntity = await this.patientRepository.createQueryBuilder().where("dni = :dni", { dni }).getOne();
     return PatientMapper.entityToDomain(patientEntity);
   }
+
+  async getByEmail(email: string): Promise<Patient> {
+    let patientEntity: PatientEntity = await this.patientRepository.createQueryBuilder().where("email = :email", { email }).getOne();
+    return PatientMapper.entityToDomain(patientEntity);
+  }
 }

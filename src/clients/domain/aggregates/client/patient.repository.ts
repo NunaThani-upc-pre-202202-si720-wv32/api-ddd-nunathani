@@ -8,4 +8,5 @@ export interface PatientRepository {
   delete(patientId: number): Promise<boolean>;
   getById(id: number): Promise<Patient>;
   getByDni(dni: string): Promise<Patient>;
+  getByEmail(email: string): Promise<Patient>;
 }

@@ -14,6 +14,7 @@ import { PatientClientDto } from '../dtos/response/patient-client.dto';
 import { ClientId } from 'src/clients/domain/aggregates/client/client-id.value';
 import { RegisterPatientRequest } from '../dtos/request/register-patient-request.dto';
 import { RegisterPatientResponse } from '../dtos/response/register-patient-response.dto';
+import { Email } from 'src/shared/domain/values/email.value';
 
 export class PatientMapper {
   public static dtoRequestToCommand(registerPatientRequest: RegisterPatientRequest) {
@@ -21,6 +22,7 @@ export class PatientMapper {
       registerPatientRequest.firstName,
       registerPatientRequest.lastName,
       registerPatientRequest.dni,
+      registerPatientRequest.email
     );
   }
 
@@ -32,7 +34,8 @@ export class PatientMapper {
       patient.getName().getLastName(),
       patient.getDni().getValue(),
       patient.getAuditTrail().getCreatedAt().format(),
-      patient.getAuditTrail().getCreatedBy().getValue()
+      patient.getAuditTrail().getCreatedBy().getValue(),
+      patient.getEmail().getValue()
     );
   }
   
@@ -45,7 +48,8 @@ export class PatientMapper {
       null,
       null
     );
-    let patient: Patient = PatientFactory.from(patientName, dni, auditTrail);
+    const email: Email = Email.create(command.email).getOrNull();
+    let patient: Patient = PatientFactory.from(patientName, dni, auditTrail, email);
     return patient;
   }
 
@@ -72,8 +76,9 @@ export class PatientMapper {
       patientEntity.auditTrail.updatedAt != null ? DateTime.fromString(patientEntity.auditTrail.updatedAt) : null,
       patientEntity.auditTrail.updatedBy != null ? UserId.of(patientEntity.auditTrail.updatedBy) : null
     );
+    const email: Email = Email.create(patientEntity.email.value).getOrNull();
     const clientId: ClientId = ClientId.of(patientEntity.id);
-    let patient: Patient = PatientFactory.withId(clientId, patientName, dni, auditTrail);
+    let patient: Patient = PatientFactory.withId(clientId, patientName, dni, auditTrail, email);
     return patient;
   }
 
@@ -83,6 +88,7 @@ export class PatientMapper {
     dto.firstName = row.firstName;
     dto.lastName = row.lastName;
     dto.dni = row.dni;
+    dto.email = row.email;
     return dto;
   }
 }
