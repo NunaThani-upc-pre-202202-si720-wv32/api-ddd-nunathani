@@ -8,6 +8,9 @@ export class Email {
   private constructor(value: string) {
     this.value = value;
   }
+  public getValue(): string {
+    return this.value;
+  }
 
   public static create(value: string): Result<AppNotification, Email>
   {

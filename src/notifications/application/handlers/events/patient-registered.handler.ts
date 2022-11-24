@@ -1,12 +1,12 @@
 import { IEventHandler } from '@nestjs/cqrs';
 import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
-import { PersonRegistered } from '../../../../clients/domain/events/patient-registered.event';
+import { PatientRegistered } from '../../../../clients/domain/events/patient-registered.event';
 
-@EventsHandler(PersonRegistered)
-export class PersonRegisteredHandler implements IEventHandler<PersonRegistered> {
+@EventsHandler(PatientRegistered)
+export class PatientRegisteredHandler implements IEventHandler<PatientRegistered> {
   constructor() {}
 
-  async handle(event: PersonRegistered) {
+  async handle(event: PatientRegistered) {
     console.log(event);
   }
 }

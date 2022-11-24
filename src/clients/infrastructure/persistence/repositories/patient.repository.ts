@@ -1,41 +1,41 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { PersonMapper } from "src/clients/application/mappers/patient.mapper";
+import { PatientMapper } from "src/clients/application/mappers/patient.mapper";
 import { Patient } from "src/clients/domain/aggregates/client/patient.entity";
-import { PersonRepository } from "src/clients/domain/aggregates/client/patient.repository";
+import { PatientRepository } from "src/clients/domain/aggregates/client/patient.repository";
 import { Repository } from "typeorm";
-import { PersonEntity } from "../entities/patient.entity";
+import { PatientEntity } from "../entities/patient.entity";
 
-export class PersonEntityRepository implements PersonRepository  {
+export class PatientEntityRepository implements PatientRepository  {
   constructor(
-    @InjectRepository(PersonEntity)
-    private personRepository: Repository<PersonEntity>,
+    @InjectRepository(PatientEntity)
+    private patientRepository: Repository<PatientEntity>,
   ) {}
 
   async create(patient: Patient): Promise<Patient> {
-    let personEntity: PersonEntity = PersonMapper.domainToEntity(patient);
-    personEntity = await this.personRepository.save(personEntity);
-    return PersonMapper.entityToDomain(personEntity);
+    let patientEntity: PatientEntity = PatientMapper.domainToEntity(patient);
+    patientEntity = await this.patientRepository.save(patientEntity);
+    return PatientMapper.entityToDomain(patientEntity);
   }
 
   async update(patient: Patient): Promise<Patient> {
-    let personEntity: PersonEntity = PersonMapper.domainToEntity(patient);
-    let personId: number = patient.getId().getValue();
-    await this.personRepository.update({ id: personId }, personEntity);
+    let patientEntity: PatientEntity = PatientMapper.domainToEntity(patient);
+    let patientId: number = patient.getId().getValue();
+    await this.patientRepository.update({ id: patientId }, patientEntity);
     return patient;
   }
 
-  async delete(personId: number): Promise<boolean> {
-    await this.personRepository.delete({ id: personId });
+  async delete(patientId: number): Promise<boolean> {
+    await this.patientRepository.delete({ id: patientId });
     return true;
   }
 
   async getById(id: number): Promise<Patient> {
-    let personEntity: PersonEntity = await this.personRepository.findOne({ where: { id: id } });
-    return PersonMapper.entityToDomain(personEntity);
+    let patientEntity: PatientEntity = await this.patientRepository.findOne({ where: { id: id } });
+    return PatientMapper.entityToDomain(patientEntity);
   }
 
   async getByDni(dni: string): Promise<Patient> {
-    let personEntity: PersonEntity = await this.personRepository.createQueryBuilder().where("dni = :dni", { dni }).getOne();
-    return PersonMapper.entityToDomain(personEntity);
+    let patientEntity: PatientEntity = await this.patientRepository.createQueryBuilder().where("dni = :dni", { dni }).getOne();
+    return PatientMapper.entityToDomain(patientEntity);
   }
 }

@@ -1,32 +1,32 @@
-import { PersonEntity } from 'src/clients/infrastructure/persistence/entities/patient.entity';
+import { PatientEntity } from 'src/clients/infrastructure/persistence/entities/patient.entity';
 import { Patient } from 'src/clients/domain/aggregates/client/patient.entity';
-import { PersonNameValue } from 'src/clients/infrastructure/persistence/values/patient-name.value';
+import { PatientNameValue } from 'src/clients/infrastructure/persistence/values/patient-name.value';
 import { DniValue } from 'src/clients/infrastructure/persistence/values/dni.value';
 import { AuditTrailValue } from 'src/shared/infrastructure/persistence/values/audit-trail.value';
-import { RegisterPerson } from '../messages/commands/register-patient.command';
-import { PersonName } from 'src/shared/domain/values/patient-name.value';
+import { RegisterPatient } from '../messages/commands/register-patient.command';
+import { PatientName } from 'src/shared/domain/values/patient-name.value';
 import { Dni } from 'src/shared/domain/values/dni.value';
 import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
 import { DateTime } from 'src/shared/domain/values/date-time.value';
 import { UserId } from 'src/users/domain/aggregates/user/user-id.value';
-import { PersonFactory } from 'src/clients/domain/factories/patient.factory';
-import { PersonClientDto } from '../dtos/response/patient-client.dto';
+import { PatientFactory } from 'src/clients/domain/factories/patient.factory';
+import { PatientClientDto } from '../dtos/response/patient-client.dto';
 import { ClientId } from 'src/clients/domain/aggregates/client/client-id.value';
-import { RegisterPersonRequest } from '../dtos/request/register-patient-request.dto';
-import { RegisterPersonResponse } from '../dtos/response/register-patient-response.dto';
+import { RegisterPatientRequest } from '../dtos/request/register-patient-request.dto';
+import { RegisterPatientResponse } from '../dtos/response/register-patient-response.dto';
 
-export class PersonMapper {
-  public static dtoRequestToCommand(registerPersonRequest: RegisterPersonRequest) {
-    return new RegisterPerson(
-      registerPersonRequest.firstName,
-      registerPersonRequest.lastName,
-      registerPersonRequest.dni,
+export class PatientMapper {
+  public static dtoRequestToCommand(registerPatientRequest: RegisterPatientRequest) {
+    return new RegisterPatient(
+      registerPatientRequest.firstName,
+      registerPatientRequest.lastName,
+      registerPatientRequest.dni,
     );
   }
 
   public static domainToDtoResponse(patient: Patient) {
     
-    return new RegisterPersonResponse(
+    return new RegisterPatientResponse(
       patient.getId().getValue(),
       patient.getName().getFirstName(),
       patient.getName().getLastName(),
@@ -36,8 +36,8 @@ export class PersonMapper {
     );
   }
   
-  public static commandToDomain(command: RegisterPerson, userId: number): Patient {
-    const personName: PersonName = PersonName.create(command.firstName, command.lastName);
+  public static commandToDomain(command: RegisterPatient, userId: number): Patient {
+    const patientName: PatientName = PatientName.create(command.firstName, command.lastName);
     const dni: Dni = Dni.create(command.dni);
     const auditTrail: AuditTrail = AuditTrail.from(
       DateTime.utcNow(),
@@ -45,40 +45,40 @@ export class PersonMapper {
       null,
       null
     );
-    let patient: Patient = PersonFactory.from(personName, dni, auditTrail);
+    let patient: Patient = PatientFactory.from(patientName, dni, auditTrail);
     return patient;
   }
 
-  public static domainToEntity(patient: Patient): PersonEntity {
-    const personEntity: PersonEntity = new PersonEntity();
-    personEntity.name = PersonNameValue.from(patient.getName().getFirstName(), patient.getName().getLastName());
-    personEntity.dni = DniValue.from(patient.getDni().getValue());
+  public static domainToEntity(patient: Patient): PatientEntity {
+    const patientEntity: PatientEntity = new PatientEntity();
+    patientEntity.name = PatientNameValue.from(patient.getName().getFirstName(), patient.getName().getLastName());
+    patientEntity.dni = DniValue.from(patient.getDni().getValue());
     const createdAt: string = patient.getAuditTrail() != null && patient.getAuditTrail().getCreatedAt() != null ? patient.getAuditTrail().getCreatedAt().format() : null;
     const createdBy: number = patient.getAuditTrail() != null && patient.getAuditTrail().getCreatedBy() != null ? patient.getAuditTrail().getCreatedBy().getValue() : null;
     const updatedAt: string = patient.getAuditTrail() != null && patient.getAuditTrail().getUpdatedAt() != null ? patient.getAuditTrail().getUpdatedAt().format() : null;
     const updatedBy: number = patient.getAuditTrail() != null && patient.getAuditTrail().getUpdatedBy() != null ? patient.getAuditTrail().getUpdatedBy().getValue() : null;
     const auditTrailValue: AuditTrailValue = AuditTrailValue.from(createdAt, createdBy, updatedAt, updatedBy);
-    personEntity.auditTrail = auditTrailValue;
-    return personEntity;
+    patientEntity.auditTrail = auditTrailValue;
+    return patientEntity;
   }
 
-  public static entityToDomain(personEntity: PersonEntity): Patient {
-    if (personEntity == null) return null;
-    const personName: PersonName = PersonName.create(personEntity.name.firstName, personEntity.name.lastName);
-    const dni: Dni = Dni.create(personEntity.dni.value);
+  public static entityToDomain(patientEntity: PatientEntity): Patient {
+    if (patientEntity == null) return null;
+    const patientName: PatientName = PatientName.create(patientEntity.name.firstName, patientEntity.name.lastName);
+    const dni: Dni = Dni.create(patientEntity.dni.value);
     const auditTrail: AuditTrail = AuditTrail.from(
-      personEntity.auditTrail.createdAt != null ? DateTime.fromString(personEntity.auditTrail.createdAt) : null,
-      personEntity.auditTrail.createdBy != null ? UserId.of(personEntity.auditTrail.createdBy) : null,
-      personEntity.auditTrail.updatedAt != null ? DateTime.fromString(personEntity.auditTrail.updatedAt) : null,
-      personEntity.auditTrail.updatedBy != null ? UserId.of(personEntity.auditTrail.updatedBy) : null
+      patientEntity.auditTrail.createdAt != null ? DateTime.fromString(patientEntity.auditTrail.createdAt) : null,
+      patientEntity.auditTrail.createdBy != null ? UserId.of(patientEntity.auditTrail.createdBy) : null,
+      patientEntity.auditTrail.updatedAt != null ? DateTime.fromString(patientEntity.auditTrail.updatedAt) : null,
+      patientEntity.auditTrail.updatedBy != null ? UserId.of(patientEntity.auditTrail.updatedBy) : null
     );
-    const clientId: ClientId = ClientId.of(personEntity.id);
-    let patient: Patient = PersonFactory.withId(clientId, personName, dni, auditTrail);
+    const clientId: ClientId = ClientId.of(patientEntity.id);
+    let patient: Patient = PatientFactory.withId(clientId, patientName, dni, auditTrail);
     return patient;
   }
 
-  public static ormToPersonClientDto(row: any): PersonClientDto {
-    let dto = new PersonClientDto();
+  public static ormToPatientClientDto(row: any): PatientClientDto {
+    let dto = new PatientClientDto();
     dto.id = Number(row.id);
     dto.firstName = row.firstName;
     dto.lastName = row.lastName;

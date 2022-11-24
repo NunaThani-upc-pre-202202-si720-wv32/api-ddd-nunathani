@@ -1,4 +1,4 @@
-export class RegisterPerson {
+export class RegisterPatient {
   constructor(
     public readonly firstName: string,
     public readonly lastName: string,

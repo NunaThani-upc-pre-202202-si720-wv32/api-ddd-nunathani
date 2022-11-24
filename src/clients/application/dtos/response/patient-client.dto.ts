@@ -1,4 +1,4 @@
-export class PersonClientDto {
+export class PatientClientDto {
     public id: number;
     public firstName: string;
     public lastName: string;

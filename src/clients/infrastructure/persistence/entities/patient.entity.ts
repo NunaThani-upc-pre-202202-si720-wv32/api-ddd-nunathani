@@ -1,13 +1,13 @@
 import { ChildEntity, Column } from 'typeorm';
 import { ClientType } from '../../../domain/aggregates/client/client-type.enum';
 import { DniValue } from '../values/dni.value';
-import { PersonNameValue } from '../values/patient-name.value';
+import { PatientNameValue } from '../values/patient-name.value';
 import { ClientEntity } from './client.entity';
 
 @ChildEntity(ClientType.PATIENT)
-export class PersonEntity extends ClientEntity {
-  @Column((type) => PersonNameValue, { prefix: false })
-  public name: PersonNameValue;
+export class PatientEntity extends ClientEntity {
+  @Column((type) => PatientNameValue, { prefix: false })
+  public name: PatientNameValue;
 
   @Column((type) => DniValue, { prefix: false })
   public dni: DniValue;

@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ClientType } from 'src/clients/domain/aggregates/client/client-type.enum';
 import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
+import { Email } from 'src/shared/domain/values/email.value';
 import { ClientId } from './client-id.value';
 
 export class Client extends AggregateRoot {
@@ -29,8 +30,5 @@ export class Client extends AggregateRoot {
   public changeId(id: ClientId) {
     this.id = id;
   }
-
-  
-
 
 }

@@ -1,36 +1,36 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { RegisterPersonRequest } from '../dtos/request/register-patient-request.dto';
-import { RegisterPersonResponse } from '../dtos/response/register-patient-response.dto';
-import { RegisterPersonValidator } from '../validators/register-patient.validator';
+import { RegisterPatientRequest } from '../dtos/request/register-patient-request.dto';
+import { RegisterPatientResponse } from '../dtos/response/register-patient-response.dto';
+import { RegisterPatientValidator } from '../validators/register-patient.validator';
 import { AppNotification } from 'src/shared/application/app.notification';
 import { Result } from 'typescript-result';
-import { RegisterPerson } from '../messages/commands/register-patient.command';
-import { PersonRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/patient.repository';
+import { RegisterPatient } from '../messages/commands/register-patient.command';
+import { PatientRepository, PERSON_REPOSITORY } from 'src/clients/domain/aggregates/client/patient.repository';
 import { Patient } from 'src/clients/domain/aggregates/client/patient.entity';
-import { PersonMapper } from '../mappers/patient.mapper';
+import { PatientMapper } from '../mappers/patient.mapper';
 
 @Injectable()
-export class PersonApplicationService {
+export class PatientApplicationService {
   constructor(
     private commandBus: CommandBus,
-    private registerPersonValidator: RegisterPersonValidator,
+    private registerPatientValidator: RegisterPatientValidator,
     @Inject(PERSON_REPOSITORY)
-    private readonly personRepository: PersonRepository,
+    private readonly patientRepository: PatientRepository,
   ) {}
 
   async register(
-    registerPersonRequest: RegisterPersonRequest,
-  ): Promise<Result<AppNotification, RegisterPersonResponse>> {
-    const registerPerson: RegisterPerson = PersonMapper.dtoRequestToCommand(registerPersonRequest);
-    const notification: AppNotification = await this.registerPersonValidator.validate(registerPerson);
+    registerPatientRequest: RegisterPatientRequest,
+  ): Promise<Result<AppNotification, RegisterPatientResponse>> {
+    const registerPatient: RegisterPatient = PatientMapper.dtoRequestToCommand(registerPatientRequest);
+    const notification: AppNotification = await this.registerPatientValidator.validate(registerPatient);
     if (notification.hasErrors()) return Result.error(notification);
-    const patient: Patient = await this.commandBus.execute(registerPerson);
-    const response: RegisterPersonResponse = PersonMapper.domainToDtoResponse(patient);
+    const patient: Patient = await this.commandBus.execute(registerPatient);
+    const response: RegisterPatientResponse = PatientMapper.domainToDtoResponse(patient);
     return Result.ok(response);
   }
 
   async getById(id: number) {
-    return await this.personRepository.getById(id);
+    return await this.patientRepository.getById(id);
   }
 }

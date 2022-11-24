@@ -1,30 +1,30 @@
 import { Controller, Post, Body, Res, Get, Param } from '@nestjs/common';
 import { Result }                   from 'typescript-result';
 import { QueryBus }                 from '@nestjs/cqrs';
-import { RegisterPersonRequest }    from 'src/clients/application/dtos/request/register-patient-request.dto';
-import { PersonApplicationService } from 'src/clients/application/services/patient-application.service';
+import { RegisterPatientRequest }    from 'src/clients/application/dtos/request/register-patient-request.dto';
+import { PatientApplicationService } from 'src/clients/application/services/patient-application.service';
 import { AppNotification }          from 'src/shared/application/app.notification';
-import { RegisterPersonResponse }   from 'src/clients/application/dtos/response/register-patient-response.dto';
+import { RegisterPatientResponse }   from 'src/clients/application/dtos/response/register-patient-response.dto';
 import { ApiController }            from 'src/shared/interface/rest/api.controller';
-import { GetPersonClients }         from 'src/clients/application/messages/queries/get-patient-clients.query';
+import { GetPatientClients }         from 'src/clients/application/messages/queries/get-patient-clients.query';
 import { ApiOperation, ApiTags }    from '@nestjs/swagger';
 
 @Controller('clients/patient')
 @ApiTags('patient clients')
-export class PersonController {
+export class PatientController {
   constructor(
-    private readonly personApplicationService: PersonApplicationService,
+    private readonly patientApplicationService: PatientApplicationService,
     private readonly queryBus: QueryBus
   ) {}
 
   @Post('')
   @ApiOperation({ summary: 'Register Patient Client' })
   async register(
-    @Body() registerPersonRequest: RegisterPersonRequest,
+    @Body() registerPatientRequest: RegisterPatientRequest,
     @Res({ passthrough: true }) response
   ): Promise<object> {
     try {
-      const result: Result<AppNotification, RegisterPersonResponse> = await this.personApplicationService.register(registerPersonRequest);
+      const result: Result<AppNotification, RegisterPatientResponse> = await this.patientApplicationService.register(registerPatientRequest);
       if (result.isSuccess()) {
           return ApiController.created(response, result.value);
       }
@@ -37,7 +37,7 @@ export class PersonController {
   @Get('')
   async getAll(@Res({ passthrough: true }) response): Promise<object> {
     try {
-      const customers = await this.queryBus.execute(new GetPersonClients());
+      const customers = await this.queryBus.execute(new GetPatientClients());
       return ApiController.ok(response, customers);
     } catch (error) {
       return ApiController.serverError(response, error);
@@ -47,7 +47,7 @@ export class PersonController {
   @Get('/:id')
   async getById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
     try {
-      const patient = await this.personApplicationService.getById(id);
+      const patient = await this.patientApplicationService.getById(id);
       return ApiController.ok(response, patient);
     } catch (error) {
       return ApiController.serverError(response, error);

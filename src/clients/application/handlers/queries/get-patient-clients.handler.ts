@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { DataSource } from 'typeorm';
-import { PersonClientDto } from '../../dtos/response/patient-client.dto';
-import { GetPersonClients } from '../../messages/queries/get-patient-clients.query';
-import { PersonMapper } from '../../mappers/patient.mapper';
+import { PatientClientDto } from '../../dtos/response/patient-client.dto';
+import { GetPatientClients } from '../../messages/queries/get-patient-clients.query';
+import { PatientMapper } from '../../mappers/patient.mapper';
 
-@QueryHandler(GetPersonClients)
-export class GetPersonClientsHandler implements IQueryHandler<GetPersonClients> {
+@QueryHandler(GetPatientClients)
+export class GetPatientClientsHandler implements IQueryHandler<GetPatientClients> {
   constructor(private dataSource: DataSource) {}
 
-  async execute(query: GetPersonClients) {
+  async execute(query: GetPatientClients) {
     const manager = this.dataSource.createEntityManager();
     const sql = `
     SELECT 
@@ -24,9 +24,9 @@ export class GetPersonClientsHandler implements IQueryHandler<GetPersonClients> 
       last_name, first_name;`;
     const rows = await manager.query(sql);
     if (rows.length <= 0) return [];
-    const personClients: PersonClientDto[] = rows.map(function (row: any) {
-      return PersonMapper.ormToPersonClientDto(row);
+    const patientClients: PatientClientDto[] = rows.map(function (row: any) {
+      return PatientMapper.ormToPatientClientDto(row);
     });
-    return personClients;
+    return patientClients;
   }
 }
