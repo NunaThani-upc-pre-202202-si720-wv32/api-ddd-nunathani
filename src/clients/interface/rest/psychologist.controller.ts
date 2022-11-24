@@ -35,6 +35,7 @@ export class PsychologistController {
   }
 
   @Get('')
+  @ApiOperation({ summary: 'Get All Psychologist Clients' })
   async getAll(@Res({ passthrough: true }) response): Promise<object> {
     try {
       const customers = await this.queryBus.execute(new GetPsychologistClients());
@@ -45,6 +46,7 @@ export class PsychologistController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Get Psychologist Client By Id' })
   async getById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
     try {
       const patient = await this.psychologistApplicationService.getById(id);

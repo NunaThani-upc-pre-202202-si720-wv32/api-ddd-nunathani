@@ -35,6 +35,7 @@ export class PatientController {
   }
 
   @Get('')
+  @ApiOperation({ summary: 'Get All Patient Clients' })
   async getAll(@Res({ passthrough: true }) response): Promise<object> {
     try {
       const customers = await this.queryBus.execute(new GetPatientClients());
@@ -45,6 +46,7 @@ export class PatientController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Get Patient Client By Id' })
   async getById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
     try {
       const patient = await this.patientApplicationService.getById(id);
