@@ -15,6 +15,7 @@ import { RegisterPsychologist } from '../messages/commands/register-psychologist
 import { RegisterPsychologistRequest } from '../dtos/request/register-psychologist-request.dto';
 import { RegisterPsychologistResponse } from '../dtos/response/register-psychologist-response.dto';
 import { Email } from 'src/shared/domain/values/email.value';
+import { EmailValue } from 'src/clients/infrastructure/persistence/values/email.value';
 
 export class PsychologistMapper {
   public static dtoRequestToCommand(registerPsychologistRequest: RegisterPsychologistRequest): RegisterPsychologist {
@@ -57,6 +58,7 @@ export class PsychologistMapper {
     const updatedBy: number = psychologist.getAuditTrail() != null && psychologist.getAuditTrail().getUpdatedBy() != null ? psychologist.getAuditTrail().getUpdatedBy().getValue() : null;
     const auditTrailValue: AuditTrailValue = AuditTrailValue.from(createdAt, createdBy, updatedAt, updatedBy);
     psychologistEntity.auditTrail = auditTrailValue;
+    psychologistEntity.email = EmailValue.from(psychologist.getEmail().getValue());
     return psychologistEntity;
   }
 
