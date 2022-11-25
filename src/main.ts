@@ -8,8 +8,8 @@ async function bootstrap() {
   .setTitle('NunaThani DDD API')
   .setDescription('NunaThani DDD API description')
   .setVersion('1.0')
-  .addTag('patient clients')
-  .addTag('psychologist clients')
+  .addTag('patient account')
+  .addTag('psychologist account')
   .build();
 
   const document = SwaggerModule.createDocument(app, config);
