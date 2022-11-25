@@ -68,6 +68,17 @@ export class PatientController {
     }
   }
 
+  @Get('/dni/:dni')
+  @ApiOperation({ summary: 'Get Patient Client By DNI' })
+  async getByDni(@Param('dni') dni: string, @Res({ passthrough: true }) response): Promise<object> {
+    try {
+      const patient = await this.patientApplicationService.getByDni(dni);
+      return ApiController.ok(response, patient);
+    } catch (error) {
+      return ApiController.serverError(response, error);
+    }
+  }
+
   @Delete('/:id')
   @ApiOperation({ summary: 'Delete Patient Client By Id' })
   async deleteById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
@@ -75,7 +86,7 @@ export class PatientController {
       const patient = await this.patientApplicationService.delete(id);
 
       const created: any = {
-        ok: patient
+        deleted: patient
       }
 
       return ApiController.ok(response, created);
