@@ -31,4 +31,12 @@ export class PsychologistApplicationService {
     const response: RegisterPsychologistResponse = PsychologistMapper.domainToDtoResponse(psychologist);
     return Result.ok(response);
   }
+
+  async getByUsername(username: string) {
+    return await this.psychologistRepository.getByUsername(username);
+  }
+
+  async delete(id: number) {
+    return await this.psychologistRepository.delete(id);
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Res, Get, Delete, Param } from '@nestjs/common';
 import { Result }                           from 'typescript-result';
 import { QueryBus }                         from '@nestjs/cqrs';
 import { PsychologistApplicationService }   from 'src/clients/application/services/psychologist-application.service';
@@ -51,6 +51,33 @@ export class PsychologistController {
     try {
       const patient = await this.psychologistApplicationService.getById(id);
       return ApiController.ok(response, patient);
+    } catch (error) {
+      return ApiController.serverError(response, error);
+    }
+  }
+
+  @Get('/username/:username')
+  @ApiOperation({ summary: 'Get Patient Client By Username' })
+  async getByUsername(@Param('username') username: string, @Res({ passthrough: true }) response): Promise<object> {
+    try {
+      const patient = await this.psychologistApplicationService.getByUsername(username);
+      return ApiController.ok(response, patient);
+    } catch (error) {
+      return ApiController.serverError(response, error);
+    }
+  }
+
+  @Delete('/:id')
+  @ApiOperation({ summary: 'Delete Patient Client By Id' })
+  async deleteById(@Param('id') id: number, @Res({ passthrough: true }) response): Promise<object> {
+    try {
+      const patient = await this.psychologistApplicationService.delete(id);
+
+      const created: any = {
+        deleted: patient
+      }
+
+      return ApiController.ok(response, created);
     } catch (error) {
       return ApiController.serverError(response, error);
     }
