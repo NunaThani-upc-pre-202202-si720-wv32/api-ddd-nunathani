@@ -15,6 +15,7 @@ import { ClientId } from 'src/clients/domain/aggregates/client/client-id.value';
 import { RegisterPatientRequest } from '../dtos/request/register-patient-request.dto';
 import { RegisterPatientResponse } from '../dtos/response/register-patient-response.dto';
 import { Email } from 'src/shared/domain/values/email.value';
+import { EmailValue } from 'src/clients/infrastructure/persistence/values/email.value';
 
 export class PatientMapper {
   public static dtoRequestToCommand(registerPatientRequest: RegisterPatientRequest) {
@@ -26,7 +27,7 @@ export class PatientMapper {
     );
   }
 
-  public static domainToDtoResponse(patient: Patient) {
+  public static domainToDtoResponse(patient: Patient) : RegisterPatientResponse {
     
     return new RegisterPatientResponse(
       patient.getId().getValue(),
@@ -63,6 +64,7 @@ export class PatientMapper {
     const updatedBy: number = patient.getAuditTrail() != null && patient.getAuditTrail().getUpdatedBy() != null ? patient.getAuditTrail().getUpdatedBy().getValue() : null;
     const auditTrailValue: AuditTrailValue = AuditTrailValue.from(createdAt, createdBy, updatedAt, updatedBy);
     patientEntity.auditTrail = auditTrailValue;
+    patientEntity.email = EmailValue.from(patient.getEmail().getValue());
     return patientEntity;
   }
 

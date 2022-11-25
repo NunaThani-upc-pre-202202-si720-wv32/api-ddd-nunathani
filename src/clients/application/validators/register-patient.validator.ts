@@ -26,6 +26,11 @@ export class RegisterPatientValidator {
     if (dni.length <= 0) {
       notification.addError('dni is required', null);
     }
+    const email: string = registerPatient.email ? registerPatient.email.trim() : '';
+    if (email.length <= 0) {
+      notification.addError('email is required', null);
+    }
+
     if (notification.hasErrors()) {
       return notification;
     }

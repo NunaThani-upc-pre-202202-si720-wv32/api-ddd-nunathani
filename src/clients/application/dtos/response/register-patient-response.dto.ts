@@ -6,6 +6,6 @@ export class RegisterPatientResponse {
       public readonly dni: string,
       public readonly createdAt: string,
       public readonly createdBy: number,
-      public email: string,
+      public readonly email: string,
     ) {}
   }
