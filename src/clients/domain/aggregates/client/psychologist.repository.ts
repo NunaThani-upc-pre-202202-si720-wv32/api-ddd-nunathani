@@ -9,4 +9,5 @@ export interface PsychologistRepository {
   getById(id: number): Promise<Psychologist>;
   getByName(name: string): Promise<Psychologist>;
   getByEmail(email: string): Promise<Psychologist>;
+  getByUsername(username: string): Promise<Psychologist>;
 }

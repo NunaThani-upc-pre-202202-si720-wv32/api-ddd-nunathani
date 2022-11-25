@@ -16,7 +16,8 @@ export class GetPatientClientsHandler implements IQueryHandler<GetPatientClients
       first_name as firstName,
       last_name as lastName,
       dni,
-      email
+      email,
+      username
     FROM 
       clients
     WHERE

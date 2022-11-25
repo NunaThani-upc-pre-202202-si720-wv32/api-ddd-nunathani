@@ -31,6 +31,21 @@ export class RegisterPatientValidator {
       notification.addError('email is required', null);
     }
 
+    const userPhone: string = registerPatient.userPhone ? registerPatient.userPhone.trim() : '';
+    if (userPhone.length <= 0) {
+      notification.addError('userPhone is required', null);
+    }
+
+    const username: string = registerPatient.username ? registerPatient.username.trim() : '';
+    if (username.length <= 0) {
+      notification.addError('username is required', null);
+    }
+
+    const password: string = registerPatient.password ? registerPatient.password.trim() : '';
+    if (password.length <= 0) {
+      notification.addError('password is required', null);
+    }
+
     if (notification.hasErrors()) {
       return notification;
     }

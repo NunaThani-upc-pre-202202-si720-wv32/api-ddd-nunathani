@@ -5,20 +5,38 @@ import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
 import { ClientType } from 'src/clients/domain/aggregates/client/client-type.enum';
 import { PsychologistRegistered } from 'src/clients/domain/events/psychologist-registered.event';
 import { Email } from 'src/shared/domain/values/email.value';
+import { UserPhone } from 'src/shared/domain/values/user-phone.value';
+import { Username } from 'src/shared/domain/values/username.value';
+import { Password } from 'src/shared/domain/values/password.value';
 
 export class Psychologist extends Client {
   private name: PsychologistName;
-  
-  public constructor(name: PsychologistName, email: Email, auditTrail: AuditTrail) {
+  private userPhone: UserPhone;
+  private username: Username;
+  private password: Password;
+
+  public constructor(name: PsychologistName,
+    email: Email,
+    auditTrail: AuditTrail,
+    userPhone: UserPhone,
+    username: Username,
+    password: Password) {
     super(ClientType.PSYCHOLOGIST, email, auditTrail);
     this.name = name;
+    this.userPhone = userPhone;
+    this.username = username;
+    this.password = password;
   }
 
   public register() {
     const event = new PsychologistRegistered(
-      this.id.getValue(), 
+      this.id.getValue(),
       this.name.getValue(),
-      this.email.getValue());
+      this.email.getValue(),
+      this.username.getValue(),
+      this.password.getValue(),
+      this.userPhone.getValue()
+    );
     this.apply(event);
   }
 
@@ -36,5 +54,17 @@ export class Psychologist extends Client {
 
   public getEmail(): Email {
     return this.email;
+  }
+
+  public getUserPhone(): UserPhone {
+    return this.userPhone;
+  }
+
+  public getUsername(): Username {
+    return this.username;
+  }
+
+  public getPassword(): Password {
+    return this.password;
   }
 }

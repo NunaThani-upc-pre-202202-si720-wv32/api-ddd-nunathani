@@ -11,6 +11,8 @@ export class PatientEntityRepository implements PatientRepository  {
     private patientRepository: Repository<PatientEntity>,
   ) {}
 
+  
+
   async create(patient: Patient): Promise<Patient> {
     let patientEntity: PatientEntity = PatientMapper.domainToEntity(patient);
     patientEntity = await this.patientRepository.save(patientEntity);
@@ -41,6 +43,11 @@ export class PatientEntityRepository implements PatientRepository  {
 
   async getByEmail(email: string): Promise<Patient> {
     let patientEntity: PatientEntity = await this.patientRepository.createQueryBuilder().where("email = :email", { email }).getOne();
+    return PatientMapper.entityToDomain(patientEntity);
+  }
+  async getByUsername(username: string): Promise<Patient> {
+    let patientEntity: PatientEntity = await this.patientRepository.createQueryBuilder().where("username = :username", { username })
+      .getOne();
     return PatientMapper.entityToDomain(patientEntity);
   }
 }

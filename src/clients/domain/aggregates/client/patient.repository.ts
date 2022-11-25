@@ -9,4 +9,5 @@ export interface PatientRepository {
   getById(id: number): Promise<Patient>;
   getByDni(dni: string): Promise<Patient>;
   getByEmail(email: string): Promise<Patient>;
+  getByUsername(username: string): Promise<Patient>;
 }

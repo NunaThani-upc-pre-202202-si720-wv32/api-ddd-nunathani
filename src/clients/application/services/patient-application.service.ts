@@ -33,4 +33,16 @@ export class PatientApplicationService {
   async getById(id: number) {
     return await this.patientRepository.getById(id);
   }
+
+  async getByUsername(username: string) {
+    return await this.patientRepository.getByUsername(username);
+  }
+
+  async getByDni(dni: string) {
+    return await this.patientRepository.getByDni(dni);
+  }
+
+  async delete(id: number) {
+    return await this.patientRepository.delete(id);
+  }
 }

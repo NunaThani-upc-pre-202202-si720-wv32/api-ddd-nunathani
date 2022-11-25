@@ -16,6 +16,12 @@ import { RegisterPatientRequest } from '../dtos/request/register-patient-request
 import { RegisterPatientResponse } from '../dtos/response/register-patient-response.dto';
 import { Email } from 'src/shared/domain/values/email.value';
 import { EmailValue } from 'src/clients/infrastructure/persistence/values/email.value';
+import { UserPhone } from 'src/shared/domain/values/user-phone.value';
+import { Username } from 'src/shared/domain/values/username.value';
+import { Password } from 'src/shared/domain/values/password.value';
+import { UserPhoneValue } from 'src/clients/infrastructure/persistence/values/user-phone.value';
+import { UsernameValue } from 'src/clients/infrastructure/persistence/values/username.value';
+import { PasswordValue } from 'src/clients/infrastructure/persistence/values/password.value';
 
 export class PatientMapper {
   public static dtoRequestToCommand(registerPatientRequest: RegisterPatientRequest) {
@@ -23,7 +29,10 @@ export class PatientMapper {
       registerPatientRequest.firstName,
       registerPatientRequest.lastName,
       registerPatientRequest.dni,
-      registerPatientRequest.email
+      registerPatientRequest.email,
+      registerPatientRequest.userPhone,
+      registerPatientRequest.username,
+      registerPatientRequest.password
     );
   }
 
@@ -36,7 +45,10 @@ export class PatientMapper {
       patient.getDni().getValue(),
       patient.getAuditTrail().getCreatedAt().format(),
       patient.getAuditTrail().getCreatedBy().getValue(),
-      patient.getEmail().getValue()
+      patient.getEmail().getValue(),
+      patient.getUserPhone().getValue(),
+      patient.getUsername().getValue(),
+      patient.getPassword().getValue()
     );
   }
   
@@ -50,7 +62,10 @@ export class PatientMapper {
       null
     );
     const email: Email = Email.create(command.email).getOrNull();
-    let patient: Patient = PatientFactory.from(patientName, dni, auditTrail, email);
+    const userPhone: UserPhone = UserPhone.createResult(command.userPhone).getOrNull();
+    const username: Username = Username.createResult(command.username).getOrNull();
+    const password: Password = Password.create(command.password).getOrNull();
+    let patient: Patient = PatientFactory.from(patientName, dni, auditTrail, email, userPhone, username, password);
     return patient;
   }
 
@@ -65,6 +80,9 @@ export class PatientMapper {
     const auditTrailValue: AuditTrailValue = AuditTrailValue.from(createdAt, createdBy, updatedAt, updatedBy);
     patientEntity.auditTrail = auditTrailValue;
     patientEntity.email = EmailValue.from(patient.getEmail().getValue());
+    patientEntity.userPhone = UserPhoneValue.from(patient.getUserPhone().getValue());
+    patientEntity.username = UsernameValue.from(patient.getUsername().getValue());
+    patientEntity.password = PasswordValue.from(patient.getPassword().getValue());
     return patientEntity;
   }
 
@@ -79,8 +97,11 @@ export class PatientMapper {
       patientEntity.auditTrail.updatedBy != null ? UserId.of(patientEntity.auditTrail.updatedBy) : null
     );
     const email: Email = Email.create(patientEntity.email.value).getOrNull();
+    const userPhone: UserPhone = UserPhone.create(patientEntity.userPhone.value);
+    const username: Username = Username.create(patientEntity.username.value);
+    const password: Password = Password.create(patientEntity.password.value).getOrNull();
     const clientId: ClientId = ClientId.of(patientEntity.id);
-    let patient: Patient = PatientFactory.withId(clientId, patientName, dni, auditTrail, email);
+    let patient: Patient = PatientFactory.withId(clientId, patientName, dni, auditTrail, email, userPhone, username, password);
     return patient;
   }
 
@@ -91,6 +112,9 @@ export class PatientMapper {
     dto.lastName = row.lastName;
     dto.dni = row.dni;
     dto.email = row.email;
+    dto.userPhone = row.userPhone;
+    dto.username = row.username;
+    dto.password = row.password;
     return dto;
   }
 }

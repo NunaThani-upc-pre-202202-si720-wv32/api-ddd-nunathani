@@ -24,6 +24,22 @@ export class RegisterPsychologistValidator {
     // if (ruc.length <= 0) {
     //   notification.addError('ruc is required', null);
     // }
+
+    const userPhone: string = registerPsychologist.userPhone ? registerPsychologist.userPhone.trim() : '';
+    if (userPhone.length <= 0) {
+      notification.addError('userPhone is required', null);
+    }
+
+    const username: string = registerPsychologist.username ? registerPsychologist.username.trim() : '';
+    if (username.length <= 0) {
+      notification.addError('username is required', null);
+    }
+
+    const password: string = registerPsychologist.password ? registerPsychologist.password.trim() : '';
+    if (password.length <= 0) {
+      notification.addError('password is required', null);
+    }
+
     if (notification.hasErrors()) {
       return notification;
     }

@@ -14,7 +14,9 @@ export class GetPsychologistClientsHandler implements IQueryHandler<GetPsycholog
     SELECT 
       id,
       psychologist_name as psychologistName,
-      email
+      email,
+      username,
+      phone
     FROM 
       clients
     WHERE
