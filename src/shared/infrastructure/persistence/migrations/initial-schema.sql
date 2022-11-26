@@ -105,3 +105,13 @@ CREATE TABLE IF NOT EXISTS transactions(
   CONSTRAINT FK_transactions_created_by FOREIGN KEY(created_by) REFERENCES users(id),
   CONSTRAINT FK_transactions_updated_by FOREIGN KEY(updated_by) REFERENCES users(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS appointments(
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  date DATE NULL,
+  topic VARCHAR(50) NULL,
+  patient_id BIGINT UNSIGNED NULL,
+  psychologist_id BIGINT UNSIGNED NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_appointments_patient_id FOREIGN KEY(patient_id) REFERENCES clients(id)
+  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

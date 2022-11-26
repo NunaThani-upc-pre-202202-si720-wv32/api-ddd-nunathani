@@ -5,13 +5,13 @@ import { PatientRepository } from "src/account/domain/aggregates/client/patient.
 import { Repository } from "typeorm";
 import { PatientEntity } from "../entities/patient.entity";
 
-export class PatientEntityRepository implements PatientRepository  {
+export class PatientEntityRepository implements PatientRepository {
   constructor(
     @InjectRepository(PatientEntity)
     private patientRepository: Repository<PatientEntity>,
-  ) {}
+  ) { }
 
-  
+
 
   async create(patient: Patient): Promise<Patient> {
     let patientEntity: PatientEntity = PatientMapper.domainToEntity(patient);
@@ -27,8 +27,11 @@ export class PatientEntityRepository implements PatientRepository  {
   }
 
   async delete(patientId: number): Promise<boolean> {
-    await this.patientRepository.delete({ id: patientId });
-    return true;
+    //if (this.getById(patientId) != null) {
+      await this.patientRepository.delete({ id: patientId });
+      return true;
+    //}
+    //else return false;
   }
 
   async getById(id: number): Promise<Patient> {

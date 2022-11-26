@@ -3,7 +3,7 @@ import * as moment from 'moment-timezone';
 export class DateTime {
   private datetime: Date;
 
-  private constructor(
+  public constructor(
     datetime: Date
   ) {
     this.datetime = datetime;
@@ -34,5 +34,9 @@ export class DateTime {
   public format(format = 'MM/DD/YYYY') {
     //return moment(this.datetime).format(format);
     return moment(this.datetime).format();
+  }
+
+  public getValue(): Date {
+    return this.datetime;
   }
 }

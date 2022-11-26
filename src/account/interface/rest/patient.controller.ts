@@ -89,7 +89,11 @@ export class PatientController {
         deleted: patient
       }
 
-      return ApiController.ok(response, created);
+      if (patient) {
+        return ApiController.ok(response, created);
+      }
+      else return ApiController.notFound(response);
+
     } catch (error) {
       return ApiController.serverError(response, error);
     }

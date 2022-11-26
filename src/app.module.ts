@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule } from './account/account.module';
+import { AppointmentModule } from './appointment/appointment.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -22,6 +23,7 @@ import { ClientsModule } from './account/account.module';
       migrationsTableName: "migrations"
     }),
     ClientsModule,
+    AppointmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

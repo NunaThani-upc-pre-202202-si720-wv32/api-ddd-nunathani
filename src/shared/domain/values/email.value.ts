@@ -1,4 +1,4 @@
-import { AppNotification } from "src/shared/application/app.notification";
+import { AppNotification } from "../../../shared/application/app.notification";
 import { Result } from "typescript-result";
 
 export class Email {

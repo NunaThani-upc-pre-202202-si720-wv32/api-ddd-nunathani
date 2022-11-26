@@ -1,14 +1,14 @@
-import { ClientType } from 'src/account/domain/aggregates/client/client-type.enum';
-import { PatientRegistered } from 'src/account/domain/events/patient-registered.event';
-import { AuditTrail } from 'src/shared/domain/values/audit-trail.value';
-import { PatientName } from 'src/shared/domain/values/patient-name.value';
+import { ClientType } from '../../../../account/domain/aggregates/client/client-type.enum';
+import { PatientRegistered } from '../../../../account/domain/events/patient-registered.event';
+import { AuditTrail } from '../../../../shared/domain/values/audit-trail.value';
+import { PatientName } from '../../../../shared/domain/values/patient-name.value';
 import { ClientId } from './client-id.value';
 import { Dni } from '../../../../shared/domain/values/dni.value';
 import { Client } from './client.root.entity';
-import { Email } from 'src/shared/domain/values/email.value';
-import { UserPhone } from 'src/shared/domain/values/user-phone.value';
-import { Password } from 'src/shared/domain/values/password.value';
-import { Username } from 'src/shared/domain/values/username.value';
+import { Email } from '../../../../shared/domain/values/email.value';
+import { UserPhone } from '../../../../shared/domain/values/user-phone.value';
+import { Password } from '../../../../shared/domain/values/password.value';
+import { Username } from '../../../../shared/domain/values/username.value';
 
 export class Patient extends Client {
   private name: PatientName;
